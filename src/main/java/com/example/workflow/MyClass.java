@@ -16,22 +16,28 @@
  */
 package com.example.workflow;
 
+import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.spin.json.SpinJsonNode;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
 import static org.camunda.spin.Spin.S;
 
-@Component
+@Configuration
 public class MyClass {
 
-  @PostConstruct
-  public void execute() {
-    SpinJsonNode jsonNode = S("{\"dateTime\": \"2019-12-12T22:22:22\"}");
-    Object key = jsonNode.mapTo(MyDto.class);
+  @Bean
+  public JavaDelegate execute() {
+    return delegateExecution -> {
 
-    System.out.println(key);
+      SpinJsonNode jsonNode = S("{\"dateTime\": \"2019-12-12T22:22:22\"}");
+      Object key = jsonNode.mapTo(MyDto.class);
+
+      System.out.println(key);
+    };
   }
 
 }
